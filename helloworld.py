@@ -44,6 +44,7 @@ def update_text():
         obs.obs_data_set_string(settings, "text", text)
         obs.obs_source_update(source, settings)
         obs.obs_data_release(settings)
+        obs.obs_source_release(source)
 
 # ------------------------------------------------------------
 
