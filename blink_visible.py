@@ -1,5 +1,5 @@
 # OBS-Studio python scripts
-# Copyright (C) 2018 IBM
+# Copyright (C) 2018-2019 IBM
 # Copyright (C) 2018 Jim
 
 # This program is free software: you can redistribute it and/or modify
@@ -25,15 +25,6 @@ source_name = ""
 visible = True
 
 # ------------------------------------------------------------
-
-
-def refresh_pressed(props, prop):
-    """
-    Called when the 'refresh' button defined below is pressed
-    """
-    print("Refresh Pressed")
-    blink()
-
 
 def blink():
     global source_name
@@ -67,7 +58,7 @@ def script_properties():
 
         obs.source_list_release(sources)
 
-    obs.obs_properties_add_button(props, "button", "Refresh", refresh_pressed)
+    obs.obs_properties_add_int(props, "blink_rate", "Blink Rate(ms)", 1000, 10000, 1);
     return props
 
 def script_update(settings):
@@ -77,6 +68,6 @@ def script_update(settings):
     global source_name
 
     source_name = obs.obs_data_get_string(settings, "source")
-
-def script_load(settings):
-	obs.timer_add(blink, 1000)  # blink every second
+    obs.timer_remove(blink);
+    blink_rate = obs.obs_data_get_int(settings, "blink_rate")
+    obs.timer_add(blink, blink_rate)  # blink is actually toggle, do it every blink_rate ms
