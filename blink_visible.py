@@ -37,15 +37,13 @@ def refresh_pressed(props, prop):
 
 def blink():
     global source_name
+    global visible
 
     source = obs.obs_get_source_by_name(source_name)
     text = "Hello World"
     if source is not None:
-        settings = obs.obs_data_create()
-        obs.obs_data_set_string(settings, "text", text)
-        obs.obs_source_update(source, settings)
-        obs.obs_data_release(settings)
-        obs.obs_source_release(source)
+        visible = not visible
+        obs.obs_source_set_enabled(source, visible)
 
 # ------------------------------------------------------------
 
@@ -79,3 +77,6 @@ def script_update(settings):
     global source_name
 
     source_name = obs.obs_data_get_string(settings, "source")
+
+def script_load(settings):
+	obs.timer_add(blink, 1000)  # blink every second
