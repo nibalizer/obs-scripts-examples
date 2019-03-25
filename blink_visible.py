@@ -26,12 +26,12 @@ visible = True
 
 # ------------------------------------------------------------
 
+
 def blink():
     global source_name
     global visible
 
     source = obs.obs_get_source_by_name(source_name)
-    text = "Hello World"
     if source is not None:
         visible = not visible
         obs.obs_source_set_enabled(source, visible)
@@ -58,8 +58,14 @@ def script_properties():
 
         obs.source_list_release(sources)
 
-    obs.obs_properties_add_int(props, "blink_rate", "Blink Rate(ms)", 1000, 10000, 1);
+    obs.obs_properties_add_int(props,
+                               "blink_rate",
+                               "Blink Rate(ms)",
+                               1000,
+                               10000,
+                               1)
     return props
+
 
 def script_update(settings):
     """
@@ -68,6 +74,7 @@ def script_update(settings):
     global source_name
 
     source_name = obs.obs_data_get_string(settings, "source")
-    obs.timer_remove(blink);
+    obs.timer_remove(blink)
     blink_rate = obs.obs_data_get_int(settings, "blink_rate")
-    obs.timer_add(blink, blink_rate)  # blink is actually toggle, do it every blink_rate ms
+    # blink is actually toggle, do it every blink_rate ms
+    obs.timer_add(blink, blink_rate)
