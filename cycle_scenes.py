@@ -41,7 +41,7 @@ def script_properties():
     """
     props = obs.obs_properties_create()
 
-    obs.obs_properties_add_int(props, "cycle_rate", "Cycle Rate(ms)", 10000, 1000000, 1000);
+    obs.obs_properties_add_int(props, "cycle_rate", "Cycle Rate(ms)", 1000, 1000000, 1000);
     return props
 
 def script_update(settings):
