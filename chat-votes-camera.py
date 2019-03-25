@@ -16,11 +16,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # chat-votes-camera.py
-# This script fetches the name of an OBS scene from a remote server. If the name
-# matches a scene in the current configuration, OBS switches to that scene. The
-# intention is for the chat to vote twitch-plays-pokemon style on which view of
-# they want, and automation shows them that view. This seems primarily useful for
-# creative streamers.
+# This script fetches the name of an OBS scene from a remote server. If the
+# name matches a scene in the current configuration, OBS switches to that
+# scene. The intention is for the chat to vote twitch-plays-pokemon style on
+# which view of they want, and automation shows them that view. This seems
+# primarily useful for creative streamers.
 
 import urllib.request
 import urllib.error
@@ -31,6 +31,7 @@ url = ""
 
 # ------------------------------------------------------------
 
+
 def update():
     global url
     try:
@@ -38,7 +39,8 @@ def update():
             data = response.read()
             response = json.loads(data)
 
-            _scenes = zip(obs.obs_frontend_get_scene_names(), obs.obs_frontend_get_scenes())
+            _scenes = zip(obs.obs_frontend_get_scene_names(),
+                          obs.obs_frontend_get_scenes())
             scenes = {}
             for scene in _scenes:
                 scenes[scene[0]] = scene[1]
@@ -47,7 +49,8 @@ def update():
                 obs.obs_frontend_set_current_scene(scenes[response['camera']])
 
     except urllib.error.URLError as err:
-        obs.script_log(obs.LOG_WARNING, "Error opening URL '" + url + "': " + err.reason)
+        obs.script_log(obs.LOG_WARNING,
+                       "Error opening URL '" + url + "': " + err.reason)
         obs.remove_current_callback()
 
 
@@ -62,10 +65,12 @@ def script_properties():
 
     props = obs.obs_properties_create()
     obs.obs_properties_add_text(props, "url", "URL", obs.OBS_TEXT_DEFAULT)
-    obs.obs_properties_add_text(props, "secret", "secret", obs.OBS_TEXT_DEFAULT)
-    obs.obs_properties_add_int(props, "cycle_rate", "Cycle Rate(ms)", 1000, 1000000, 1000);
-
+    obs.obs_properties_add_text(props, "secret", "secret",
+                                obs.OBS_TEXT_DEFAULT)
+    obs.obs_properties_add_int(props, "cycle_rate", "Cycle Rate(ms)",
+                               1000, 1000000, 1000)
     return props
+
 
 def script_update(settings):
     """
@@ -73,7 +78,7 @@ def script_update(settings):
     """
     global url
 
-    obs.timer_remove(update);
+    obs.timer_remove(update)
     blink_rate = obs.obs_data_get_int(settings, "cycle_rate")
     obs.timer_add(update, blink_rate)  # Change scene every cycle_rate ms
     url = obs.obs_data_get_string(settings, "url")
