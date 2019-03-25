@@ -16,13 +16,15 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # cycle_scenes.py
-# Very basic script that changes the active scene every few seconds. The next scene selection is random.
+# Very basic script that changes the active scene every few seconds. The next
+# scene selection is random.
 # This is 99% me playing with the api
 
 import obspython as obs
 import random
 
 # ------------------------------------------------------------
+
 
 def cycle():
 
@@ -41,14 +43,16 @@ def script_properties():
     """
     props = obs.obs_properties_create()
 
-    obs.obs_properties_add_int(props, "cycle_rate", "Cycle Rate(ms)", 1000, 1000000, 1000);
+    obs.obs_properties_add_int(props, "cycle_rate", "Cycle Rate(ms)",
+                               1000, 1000000, 1000)
     return props
+
 
 def script_update(settings):
     """
     Called when the script’s settings (if any) have been changed by the user.
     """
 
-    obs.timer_remove(cycle);
+    obs.timer_remove(cycle)
     blink_rate = obs.obs_data_get_int(settings, "cycle_rate")
     obs.timer_add(cycle, blink_rate)  # Change scene every cycle_rate ms
