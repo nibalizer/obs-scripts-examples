@@ -39,11 +39,9 @@ def update():
             data = response.read()
             response = json.loads(data)
 
-            _scenes = zip(obs.obs_frontend_get_scene_names(),
-                          obs.obs_frontend_get_scenes())
-            scenes = {}
-            for scene in _scenes:
-                scenes[scene[0]] = scene[1]
+            scenes = dict(zip(obs.obs_frontend_get_scene_names(),
+                          obs.obs_frontend_get_scenes()))
+
             if scenes.get(response['camera']) is not None:
                 print("Switching to scene: " + response['camera'])
                 obs.obs_frontend_set_current_scene(scenes[response['camera']])
